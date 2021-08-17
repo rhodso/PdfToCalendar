@@ -72,7 +72,7 @@ public class mainGui extends javax.swing.JFrame {
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowListener() {
                 public void windowClosing(WindowEvent e) {
-                        dispose();
+                        ;
                 }
 
                 @Override
