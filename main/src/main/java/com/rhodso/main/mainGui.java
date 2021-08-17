@@ -89,6 +89,7 @@ public class mainGui extends javax.swing.JFrame {
                 toWrite += "\n";
                 br.write(toWrite);
             }
+            //br.close is done in finally in case you go looking for it
 
         } catch(Exception e){
             JOptionPane.showMessageDialog(this, "Exception occured saving file\n" + e.getMessage() + "\n" + e.getStackTrace(), "Exception occured when saving", JOptionPane.OK_OPTION);
