@@ -6,6 +6,8 @@
 package com.rhodso.main;
 
 import java.util.ArrayList;
+import java.util.Random;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -16,6 +18,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import java.awt.Desktop;
+import java.net.URI;
 
 /**
  *
@@ -110,7 +115,18 @@ public class mainGui extends javax.swing.JFrame {
     }
 
     private void secretButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        Random random = new Random();
+        if(random.nextInt(5) == 3){
+            try{
+                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                    Desktop.getDesktop().browse(new URI("https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
+                }
+            } catch (Exception e){
+                ;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Try again!", "Not yet", JOptionPane.PLAIN_MESSAGE);
+        }
     }
 
     public void addEventToList(Event _e){
