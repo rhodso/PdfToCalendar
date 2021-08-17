@@ -12,6 +12,10 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  *
@@ -19,15 +23,18 @@ import java.awt.event.WindowListener;
  */
 public class mainGui extends javax.swing.JFrame {
     ArrayList<Event> addedEvents;
+    boolean doExitAsk = false; 
    
     private void newListButtonActionPerformed(java.awt.event.ActionEvent evt) {
         addedEvents.clear();
         updateEventList();
+        doExitAsk = false;
     }
 
     private void newEventButtonActionPerformed(java.awt.event.ActionEvent evt){ 
         //Launch the event Editor
         eventEdtior edtior = new eventEdtior(this);
+        doExitAsk = true;
     }
 
     private void editEventButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -36,17 +43,70 @@ public class mainGui extends javax.swing.JFrame {
             Event e = addedEvents.get(idx);
             addedEvents.remove(idx);
             eventEdtior edtior = new eventEdtior(this, e);
+            doExitAsk = true;
         } else {
             JOptionPane.showMessageDialog(this, "No option selected!", "Cannot edit event", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        BufferedWriter br = null;
+        try{
+            //Setup and add headers
+            ArrayList<String[]> strings = new ArrayList<>(0);
+            String[] headers = {"Subject", "Start Date", "Start Time", "End Date", "End Time", "All day event", "Description", "Location"};
+            strings.add(headers);
+            
+            //Add event 
+            for(Event e : addedEvents){
+                String[] data = new String[7];
+                data[0] = e.getName();
+                data[1] = e.getDate();
+                data[3] = e.getDate();
+                data[5] = "TRUE";
+                data[6] = e.getDesc();
+                strings.add(data);
+            }
+
+            //Now write the fucking CSV
+            File f = new File("calendarOutput.csv");
+            if(f.exists()){
+                f.delete();
+            }
+            f.createNewFile();
+            br = new BufferedWriter(new FileWriter(f));
+            for(String[] line : strings){
+                String toWrite = "";
+                for(String s : line){
+                    toWrite += s + ",";
+                }
+                toWrite = toWrite.substring(0, toWrite.length()-1);
+                toWrite += "\n";
+                br.write(toWrite);
+            }
+
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Exception occured saving file\n" + e.getMessage() + "\n" + e.getStackTrace(), "Exception occured when saving", JOptionPane.OK_OPTION);
+        } finally{
+            if(br != null){
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(this, "Exception occured saving file. File may not have been saved corrently!\n" + e.getMessage() + "\n" + e.getStackTrace(), "Exception occured when saving", JOptionPane.OK_OPTION);
+                }
+            }
+        }
+        doExitAsk = false;
     }
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        if(doExitAsk){
+            if(JOptionPane.showConfirmDialog(this, "Current list not exported!\nAre you sure you want to exit?", "Confirm exit", JOptionPane.YES_NO_OPTION) == 0){
+                this.dispose();
+            }
+        } else {
+            this.dispose();
+        }
     }
 
     private void secretButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -57,14 +117,20 @@ public class mainGui extends javax.swing.JFrame {
         //Add the event to list and update the gui list
         addedEvents.add(_e);
         updateEventList();
+        doExitAsk = true;
     }
 
-    private void updateEventList(){
+    public void updateEventList(){
         DefaultListModel<String> listModel = new DefaultListModel<String>();
         for(Event e : addedEvents){
             listModel.addElement(e.toString());
         }
         eventList.setModel(listModel);
+        doExitAsk = true;
+    }
+
+    public void closeTheEditor(eventEdtior _edtior){
+        _edtior.dispose();
     }
 
     public mainGui() {
@@ -72,7 +138,7 @@ public class mainGui extends javax.swing.JFrame {
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowListener() {
                 public void windowClosing(WindowEvent e) {
-                        ;
+                        dispose();
                 }
 
                 @Override
@@ -128,6 +194,7 @@ public class mainGui extends javax.swing.JFrame {
         addedEvents = new ArrayList<Event>(0);
         updateEventList();
         this.setVisible(true);
+        doExitAsk = false;
     }
     private void initComponents() {
 

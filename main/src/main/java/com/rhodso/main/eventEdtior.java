@@ -38,15 +38,59 @@ public class eventEdtior extends javax.swing.JFrame {
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
         Event e = new Event(nameBox.getText(), dateBox.getText(), descBox.getText());
         parent.addEventToList(e);
+        parent.updateEventList();
+        this.dispose();
+    }
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        parent.updateEventList();
         this.dispose();
     }
 
     private void close(){
-        this.dispose();
+        parent.closeTheEditor(this);
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        // Override default close operation
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowListener() {
+                public void windowClosing(WindowEvent e) {
+                        close();
+                }
+
+                @Override
+                public void windowActivated(WindowEvent arg0) {
+                        ;
+                }
+
+                @Override
+                public void windowClosed(WindowEvent arg0) {
+                        ;
+                }
+
+                @Override
+                public void windowDeactivated(WindowEvent arg0) {
+                        ;
+                }
+
+                @Override
+                public void windowDeiconified(WindowEvent arg0) {
+                        ;
+                }
+
+                @Override
+                public void windowIconified(WindowEvent arg0) {
+                        ;
+                }
+
+                @Override
+                public void windowOpened(WindowEvent arg0) {
+                        ;
+                }
+        });
 
         mainScroll = new javax.swing.JScrollPane();
         mainPanel = new javax.swing.JPanel();
@@ -177,9 +221,7 @@ public class eventEdtior extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteButtonActionPerformed
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Header;
