@@ -33,10 +33,6 @@ public class mainGui extends javax.swing.JFrame {
         }
         initComponents();
         this.setVisible(true);
-        System.out.println("Ayy");
-    }
-
-    public void start(){
         
     }
 
