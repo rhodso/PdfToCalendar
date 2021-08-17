@@ -5,16 +5,107 @@
  */
 package com.rhodso.main;
 
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 /**
  *
  * @author rhodso
  */
 public class mainGui extends javax.swing.JFrame {
+    ArrayList<Event> addedEvents;
+   
+    private void newListButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        addedEvents.clear();
+        updateEventList();
+    }
 
-    /**
-     * Creates new form mainGui
-     */
+    private void newEventButtonActionPerformed(java.awt.event.ActionEvent evt){ 
+        //Launch the event Editor
+        eventEdtior edtior = new eventEdtior(this);
+    }
+
+    private void editEventButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        if(eventList.getSelectedIndex() != -1){
+            int idx = eventList.getSelectedIndex();
+            Event e = addedEvents.get(idx);
+            addedEvents.remove(idx);
+            eventEdtior edtior = new eventEdtior(this, e);
+        } else {
+            JOptionPane.showMessageDialog(this, "No option selected!", "Cannot edit event", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+
+    private void secretButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+
+    public void addEventToList(Event _e){
+        //Add the event to list and update the gui list
+        addedEvents.add(_e);
+        updateEventList();
+    }
+
+    private void updateEventList(){
+        DefaultListModel<String> listModel = new DefaultListModel<String>();
+        for(Event e : addedEvents){
+            listModel.addElement(e.toString());
+        }
+        eventList.setModel(listModel);
+    }
+
     public mainGui() {
+        // Override default close operation
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowListener() {
+                public void windowClosing(WindowEvent e) {
+                        dispose();
+                }
+
+                @Override
+                public void windowActivated(WindowEvent arg0) {
+                        ;
+                }
+
+                @Override
+                public void windowClosed(WindowEvent arg0) {
+                        ;
+                }
+
+                @Override
+                public void windowDeactivated(WindowEvent arg0) {
+                        ;
+                }
+
+                @Override
+                public void windowDeiconified(WindowEvent arg0) {
+                        ;
+                }
+
+                @Override
+                public void windowIconified(WindowEvent arg0) {
+                        ;
+                }
+
+                @Override
+                public void windowOpened(WindowEvent arg0) {
+                        ;
+                }
+        });
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -31,47 +122,13 @@ public class mainGui extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(mainGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+
+        //Components etc
         initComponents();
+        addedEvents = new ArrayList<Event>(0);
+        updateEventList();
         this.setVisible(true);
-        
     }
-
-    private void newListButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newListButtonActionPerformed
-        // TODO add your handling code here:
-    }
-
-    private void newEventButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newEventButtonActionPerformed
-        // TODO add your handling code here:
-    }
-
-    private void editEventButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editEventButtonActionPerformed
-        // TODO add your handling code here:
-    }
-
-    private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
-        // TODO add your handling code here:
-    }
-
-    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
-        // TODO add your handling code here:
-    }
-
-    private void secretButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_secretButtonActionPerformed
-        // TODO add your handling code here:
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        
-    }
-
     private void initComponents() {
 
         mainScrollPane = new javax.swing.JScrollPane();
@@ -183,7 +240,7 @@ public class mainGui extends javax.swing.JFrame {
         listHeader.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         listHeader.setText("Current Events:");
 
-        eventList.setModel(new javax.swing.AbstractListModel<String>() {
+        eventList.setModel(new javax.swing.DefaultListModel<String>() {
             String[] strings = { "" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -252,9 +309,6 @@ public class mainGui extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Header;
     private javax.swing.JPanel controlsPanel;
     private javax.swing.JButton editEventButton;
@@ -269,5 +323,4 @@ public class mainGui extends javax.swing.JFrame {
     private javax.swing.JButton newEventButton;
     private javax.swing.JButton newListButton;
     private javax.swing.JButton secretButton;
-    // End of variables declaration//GEN-END:variables
 }

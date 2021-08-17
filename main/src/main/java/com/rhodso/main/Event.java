@@ -31,4 +31,7 @@ public class Event {
     public void setDate(String _date){ date = _date; }
     public void setDesc(String _desc){ desc = _desc; }
 
+    public String toString(){
+        return name + " | " + date;
+    }
 }

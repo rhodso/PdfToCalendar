@@ -5,17 +5,34 @@
  */
 package com.rhodso.main;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
+import javax.swing.JFrame;
+
 /**
  *
  * @author rhodso
  */
 public class eventEdtior extends javax.swing.JFrame {
+    mainGui parent;
 
     /**
      * Creates new form eventEdtior
      */
-    public eventEdtior() {
+    public eventEdtior(mainGui _parent) {
+        parent = _parent;
         initComponents();
+        this.setVisible(true);
+    }
+    
+    public eventEdtior(mainGui _parent, Event _e) {
+        parent = _parent;
+        initComponents();
+        nameBox.setText(_e.getName());
+        dateBox.setText(_e.getDate());
+        descBox.setText(_e.getDesc());
+        this.setVisible(true);
     }
 
     /**
@@ -25,7 +42,51 @@ public class eventEdtior extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        Event e = new Event(nameBox.getText(), dateBox.getText(), descBox.getText());
+        parent.addEventToList(e);
+        this.dispose();
+    }
+
     private void initComponents() {
+        // Override default close operation
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowListener() {
+                public void windowClosing(WindowEvent e) {
+                        dispose();
+                }
+
+                @Override
+                public void windowActivated(WindowEvent arg0) {
+                        ;
+                }
+
+                @Override
+                public void windowClosed(WindowEvent arg0) {
+                        ;
+                }
+
+                @Override
+                public void windowDeactivated(WindowEvent arg0) {
+                        ;
+                }
+
+                @Override
+                public void windowDeiconified(WindowEvent arg0) {
+                        ;
+                }
+
+                @Override
+                public void windowIconified(WindowEvent arg0) {
+                        ;
+                }
+
+                @Override
+                public void windowOpened(WindowEvent arg0) {
+                        ;
+                }
+        });
 
         mainScroll = new javax.swing.JScrollPane();
         mainPanel = new javax.swing.JPanel();
@@ -141,11 +202,6 @@ public class eventEdtior extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_saveButtonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Header;
